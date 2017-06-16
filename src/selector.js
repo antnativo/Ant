@@ -4,6 +4,7 @@ function writeHistory() {
     }
     function setCurrentNode(self, value, noHistory) {
       self.nodes = value;
+
       (self.history.length == 0 || !noHistory || noHistory != "undefined") ? self.history.push(value.slice()) : null;
     }
     function converToArray(value) {
@@ -23,7 +24,9 @@ function writeHistory() {
       }
     }
     function queryCSS(self, str) {
-      var len = self.history.length;
+      debugger
+      var len = self.history.length,
+        previousSelectors = self.previousSelectors.length ? self.previousSelectors[self.previousSelectors.length -1] : "";
       if(this.nodes && this.nodes.length == 1){
         if (len > 0 && this.nodes == self.history[0]) {
           internalDoc = this.nodes[0];
@@ -31,12 +34,17 @@ function writeHistory() {
           internalDoc = self.history[0];
         }
       } else if (this.nodes && this.nodes.length > 1 ){ 
-
-      } else {
+        str = previousSelectors + " " + str;
         internalDoc = self.document
-      }
+      } else
+        internalDoc = self.document
       if (internalDoc instanceof Array)
         throw new Error("Parent Node must be and HTMLElement");
+      var foundNodes = internalDoc.querySelectorAll(str)
+      if (foundNodes.length > 1)
+        str = previousSelectors + " " + str; 
+      str = str.trim()
+      self.previousSelectors.push(str)
       convertToArrayAndSetNode(self, internalDoc.querySelectorAll(str));
 }
  // PUBLIC //
