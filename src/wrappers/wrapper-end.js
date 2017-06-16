@@ -1,6 +1,7 @@
     //Return new  __()
-    return function (nodes) {
-      return new __(nodes);
+return function (nodes, context) {
+    var doc = (context) ? context : document;
+      return new __(nodes,doc);
     }
    })();
    $ant = $ant.query;

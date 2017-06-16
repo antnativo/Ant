@@ -14,9 +14,13 @@ const gulp = require('gulp'),
   fs = require("fs"),
   paths = {
      basescript: [
-      'src/wrappers/wrapper-start.js'
-      , 'src/private.js'
+       'src/wrappers/wrapper-start.js'
+      , 'src/init.js' 
       , 'src/selector.js'
+      , 'src/iterators.js'
+      , 'src/dom.js'
+      , 'src/events.js'
+      , 'src/private.js'
       , 'src/wrappers/wrapper-end.js'
     ]
     , testingScripts: ['tests/scripts/*.js' ]

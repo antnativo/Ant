@@ -1,16 +1,21 @@
 var $ant;
 (function () {
   $ant.query = (function () { 
-var it = 0;
-    // PRIVATE //
-    var doc = document;
-    function writeHistory() {
+function __(nodes,context) {
+      this.nodes;
+      this.document = context;
+      this.history = [];
+      this.find(nodes);
+      this.length = this.nodes.length;
+      return this;
+    }
+// Private //
+function writeHistory() {
       this.history.push(this.nodes.slice())
     }
     function setCurrentNode(self, value, noHistory) {
-      (self.history.length == 0 || !noHistory || noHistory != "undefined") ? self.history.push(self.slice()) : null;
-      self.length = 0
-      self.concat( value );
+      self.nodes = value;
+      (self.history.length == 0 || !noHistory || noHistory != "undefined") ? self.history.push(value.slice()) : null;
     }
     function converToArray(value) {
       return Array
@@ -30,140 +35,22 @@ var it = 0;
     }
     function queryCSS(self, str) {
       var len = self.history.length;
-      if (len > 0 && this == self.history[len - 1]) {
-        internalDoc = this;
-      } else if (len > 0 && this != self.history[len - 1]) {
-        internalDoc = self.history[len - 1];
+      if(this.nodes && this.nodes.length == 1){
+        if (len > 0 && this.nodes == self.history[0]) {
+          internalDoc = this.nodes[0];
+        } else if (len > 0 && this.nodes != self.history[0]) {
+          internalDoc = self.history[0];
+        }
+      } else if (this.nodes && this.nodes.length > 1 ){ 
+
       } else {
-        internalDoc = doc
+        internalDoc = self.document
       }
       if (internalDoc instanceof Array)
         throw new Error("Parent Node must be and HTMLElement");
       convertToArrayAndSetNode(self, internalDoc.querySelectorAll(str));
-    }
-    function compileScripts(item) {
-      var scripts = converToArray(item.getElementsByTagName("script"));
-      var count = scripts.length - 1;
-      while (count >= 0) {
-        window.eval(scripts[count].textContent);
-        count--;
-      }
-    }
-    function insertHTMLAndJS(self, value, node, noCompile) {
-      var el = (typeof node != "undefined" && node != null) ? node : self.nodes;
-      el.innerHTML = value;
-      ((typeof noCompile != undefined || noCompile == null) && noCompile == true) ? compileScripts(el) : null;
-    }
-    function loopAndExecuteReverse(self, item, func) {
-      var counter = 0,
-        endpoint = item.length - 1;
-      while (counter <= endpoint) {
-        func(item[counter])
-        counter++;
-      }
-    }
-    function loopAndExecute(self, item, func) {
-      var counter = item.length - 1;
-      while (counter >= 0) {
-        func(item[counter])
-        counter--;
-      }
-    }
-    // Used to clone script node and append it to the dom. Set onload event handler to removeScriptNodeOnLoad, which removes node -- AC 5/26/2016
-    // Used to remove script node once node is loaded -- AC 5/26/2016
-    function removeScriptNodeOnLoad(e) {
-      document.head.removeChild(e.target)
-    }
-    function createScriptNodeFromNode(node) {
-      var jsnode = document.createElement("script")
-      jsnode.src = node.src;
-      jsnode.type = (node.type) ? node.type : "text/javascript";
-      jsnode.onload = removeScriptNodeOnLoad;
-      jsnode.onerror = removeScriptNodeOnLoad;
-      document.head.appendChild(jsnode)
-    }
-    function compileInlineJavaScript(el) {
-      if (typeof el != "undefined" && typeof el.nodeName != "undefined" && el.nodeName != null && el.nodeName.toUpperCase().localeCompare('SCRIPT') == 0 && (!el.type || el.type.localeCompare('text/javascript') == 0) && !el.src) {
-        window['eval'].call(window, el.innerHTML)
-        return true;
-      } else if (typeof el != "undefined" && typeof el.nodeName != "undefined" && el.nodeName != null && el.nodeName.toUpperCase().localeCompare('SCRIPT') == 0 && (!el.type || el.type.localeCompare('text/javascript') == 0) && el.src) { // Added Condition to find script nodes with src  -- AC 5/26/2016
-        createScriptNodeFromNode(el) // Used to load external script and remove node once loaded -- AC 5/26/2016
-        return true;
-      }
-      return false;
-    }
-    function traverseNode(node, fun) {
-      if (typeof node != "undefined") {
-        fun(node) // Doc: If script tag with inline code, parse
-        for (var i = 0, len = node.childNodes.length; i < len; i++)
-          traverseNode(node.childNodes[i], fun) //Doc: determine each child if they are script tags with inline code. If not find the child's children --AC 5/23/16
-      }
-    }
-    function insertNode(location, value, removeNode) {
-      //supported on IE 8 -- AC 6/3/2017
-      if (!value)
-        return this;
-      var el = document.createElement("div")
-      el.innerHTML = value;
-      nodesThatWillBeInserted = converToArray(el.children)
-      this.nodes.forEach(function (node, index, array) {
-        if (removeNode) node.style.display = "none"
-        switch (value.constructor.name) {
-          case "String":
-            node.insertAdjacentHTML(location, value)
-            break;
-          case HTMLCollection:
-          case HTMLElement:
-            node.insertAdjacentElement(location, value)
-            break;
-        }
-        if (removeNode)
-          nodesThatWillBeInserted.forEach(function (value1, index1, array1) {
-            replaceNodeInArrayWithAnother.call(this, { "originalNode": node, "newNode": value1, "array": array, "index": index })
-          })
-      })
-      traverseNode(el, compileInlineJavaScript)
-      el = null;
-      return this;
-    }
-    function replaceNodeInArrayWithAnother(obj) {
-      if (!obj.array)
-        obj.array = this;
-      if (typeof obj.index == "undefined")
-        obj.index = obj.array.indexOf(obj.originalNode);
-      else if (obj.array.indexOf(obj.originalNode) == -1)
-        obj.index = obj.array.length;
-      if (obj.array.indexOf(obj.newNode) != -1)
-        obj.array.splice(index, 1)
-      else {
-        obj.array[obj.index] = obj.newNode
-        if (obj.originalNode.parentElement)
-          obj.originalNode.parentElement.removeChild(obj.originalNode)
-      }
-    }
-    function replaceNodeInArrayWithItsParent(node, array, index) {
-      var parent = node.parentElement;
-      if (array.indexOf(parent) == -1)
-        if (index)
-          array[index] = parent;
-        else
-          array[array.indexOf(node)] = parent;
-      else
-        if (index)
-          array.splice(index, 1)
-        else
-          array.splice(array.indexOf(node), 1)
-    }
-    // End of PRIVATE //
-    // PUBLIC //
-    function __(nodes, currentDocument) {
-      Array.call(this)
-      this.history = [];
-      this.find(nodes,currentDocument);
-      return this;
-    }
-    __.prototype = Object.create(Array.prototype)
-    __.prototype.constructor = __;
+}
+ // PUBLIC //
     __.prototype.find = function (nodes) {
       if (nodes instanceof Array) {
         setCurrentNode(this, nodes);
@@ -179,7 +66,6 @@ var it = 0;
       return this;
       //(<)(\w+)(\s+)([\w="'])*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>)) 
     };
-    //Function
     __.prototype.each = function (func) {
       var count = this.nodes.length - 1
       while (count >= 0) {
@@ -200,7 +86,8 @@ var it = 0;
       this.nodes.length = 1;
       return this;
     }
-    __.prototype.contents = function () {
+    //DOM Manipulation
+  __.prototype.contents = function () {
       writeHistory.call(this)
       var that = this,
         nodes = this.nodes.slice()
@@ -212,7 +99,6 @@ var it = 0;
       })
       return this;
     }
-    //DOM Manipulation
     __.prototype.html = function (value) {
       if (typeof value == "string" && value.length > 0) {
         switch (this.nodes instanceof Array) {
@@ -406,10 +292,125 @@ var it = 0;
       }
       return this;
     };
-
+// PRIVATE //
+    function compileScripts(item) {
+      var scripts = converToArray(item.getElementsByTagName("script"));
+      var count = scripts.length - 1;
+      while (count >= 0) {
+        window.eval(scripts[count].textContent);
+        count--;
+      }
+    }
+    function insertHTMLAndJS(self, value, node, noCompile) {
+      var el = (typeof node != "undefined" && node != null) ? node : self.nodes;
+      el.innerHTML = value;
+      ((typeof noCompile != undefined || noCompile == null) && noCompile == true) ? compileScripts(el) : null;
+    }
+    function loopAndExecuteReverse(self, item, func) {
+      var counter = 0,
+        endpoint = item.length - 1;
+      while (counter <= endpoint) {
+        func(item[counter])
+        counter++;
+      }
+    }
+    function loopAndExecute(self, item, func) {
+      var counter = item.length - 1;
+      while (counter >= 0) {
+        func(item[counter])
+        counter--;
+      }
+    }
+    // Used to clone script node and append it to the dom. Set onload event handler to removeScriptNodeOnLoad, which removes node -- AC 5/26/2016
+    // Used to remove script node once node is loaded -- AC 5/26/2016
+    function removeScriptNodeOnLoad(e) {
+      document.head.removeChild(e.target)
+    }
+    function createScriptNodeFromNode(node) {
+      var jsnode = document.createElement("script")
+      jsnode.src = node.src;
+      jsnode.type = (node.type) ? node.type : "text/javascript";
+      jsnode.onload = removeScriptNodeOnLoad;
+      jsnode.onerror = removeScriptNodeOnLoad;
+      document.head.appendChild(jsnode)
+    }
+    function compileInlineJavaScript(el) {
+      if (typeof el != "undefined" && typeof el.nodeName != "undefined" && el.nodeName != null && el.nodeName.toUpperCase().localeCompare('SCRIPT') == 0 && (!el.type || el.type.localeCompare('text/javascript') == 0) && !el.src) {
+        window['eval'].call(window, el.innerHTML)
+        return true;
+      } else if (typeof el != "undefined" && typeof el.nodeName != "undefined" && el.nodeName != null && el.nodeName.toUpperCase().localeCompare('SCRIPT') == 0 && (!el.type || el.type.localeCompare('text/javascript') == 0) && el.src) { // Added Condition to find script nodes with src  -- AC 5/26/2016
+        createScriptNodeFromNode(el) // Used to load external script and remove node once loaded -- AC 5/26/2016
+        return true;
+      }
+      return false;
+    }
+    function traverseNode(node, fun) {
+      if (typeof node != "undefined") {
+        fun(node) // Doc: If script tag with inline code, parse
+        for (var i = 0, len = node.childNodes.length; i < len; i++)
+          traverseNode(node.childNodes[i], fun) //Doc: determine each child if they are script tags with inline code. If not find the child's children --AC 5/23/16
+      }
+    }
+    function insertNode(location, value, removeNode) {
+      //supported on IE 8 -- AC 6/3/2017
+      if (!value)
+        return this;
+      var el = document.createElement("div")
+      el.innerHTML = value;
+      nodesThatWillBeInserted = converToArray(el.children)
+      this.nodes.forEach(function (node, index, array) {
+        if (removeNode) node.style.display = "none"
+        switch (value.constructor.name) {
+          case "String":
+            node.insertAdjacentHTML(location, value)
+            break;
+          case HTMLCollection:
+          case HTMLElement:
+            node.insertAdjacentElement(location, value)
+            break;
+        }
+        if (removeNode)
+          nodesThatWillBeInserted.forEach(function (value1, index1, array1) {
+            replaceNodeInArrayWithAnother.call(this, { "originalNode": node, "newNode": value1, "array": array, "index": index })
+          })
+      })
+      traverseNode(el, compileInlineJavaScript)
+      el = null;
+      return this;
+    }
+    function replaceNodeInArrayWithAnother(obj) {
+      if (!obj.array)
+        obj.array = this.nodes;
+      if (typeof obj.index == "undefined")
+        obj.index = obj.array.indexOf(obj.originalNode);
+      else if (obj.array.indexOf(obj.originalNode) == -1)
+        obj.index = obj.array.length;
+      if (obj.array.indexOf(obj.newNode) != -1)
+        obj.array.splice(index, 1)
+      else {
+        obj.array[obj.index] = obj.newNode
+        if (obj.originalNode.parentElement)
+          obj.originalNode.parentElement.removeChild(obj.originalNode)
+      }
+    }
+    function replaceNodeInArrayWithItsParent(node, array, index) {
+      var parent = node.parentElement;
+      if (array.indexOf(parent) == -1)
+        if (index)
+          array[index] = parent;
+        else
+          array[array.indexOf(node)] = parent;
+      else
+        if (index)
+          array.splice(index, 1)
+        else
+          array.splice(array.indexOf(node), 1)
+    }
+    // End of PRIVATE //
     //Return new  __()
-    return function (nodes) {
-      return new __(nodes);
+return function (nodes, context) {
+    var doc = (context) ? context : document;
+      return new __(nodes,doc);
     }
    })();
    $ant = $ant.query;
