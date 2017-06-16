@@ -1,0 +1,47 @@
+{
+  "name": "ant",
+  "version": "1.0.0",
+  "description": "Ant is a minimal replacement for jQuery or Zepto. Although it does not provide all their functionality, it is meant to be small and offer essential functionality. IE 9+ is supported",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "!debug"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antnativo/Ant.git"
+  },
+  "keywords": [
+    "Ant",
+    "jQuery",
+    "Replacement",
+    "Zepto",
+    "Replacement",
+    "Selectors",
+    "DOM",
+    "Manipulation",
+    "Library"
+  ],
+  "author": "Anthony Crawford",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/antnativo/Ant/issues"
+  },
+  "homepage": "https://github.com/antnativo/Ant#readme",
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-exec": "^2.1.3",
+    "gulp-ignore": "^2.0.2",
+    "gulp-imagemin": "^3.3.0",
+    "gulp-jshint": "^2.0.4",
+    "gulp-less": "^3.3.0",
+    "gulp-qunit": "^1.5.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "jshint": "^2.9.4",
+    "jshint-stylish": "^2.2.1",
+    "uglify": "^0.1.5"
+  }
+}
