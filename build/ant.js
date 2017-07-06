@@ -2,6 +2,7 @@ var $ant;
 (function () {
   $ant.query = (function () { 
 function __(nodes, context) {
+       Array.call(this)
       this.nodes = [];
       this.document = context;
       this.history = []
@@ -10,14 +11,17 @@ function __(nodes, context) {
         this.find(nodes);
       this.length = this.nodes.length
       return this;
-    }
+}
+__.prototype = Object.create(Array.prototype);
+__.prototype.constructor = __;
 // Private //
     function writeHistory() {
       this.history.push(this.nodes.slice())
     }
     function setCurrentNode(self, value, noHistory) {
       self.nodes = value;
-
+      self.length = 0 
+      Array.prototype.splice.apply(self, [0, value.length].concat(value));
       (self.history.length == 0 || !noHistory || noHistory != "undefined") ? self.history.push(value.slice()) : null;
     }
     function converToArray(value) {
@@ -282,13 +286,10 @@ function __(nodes, context) {
       return this;
     };
     //Events 
-__.prototype.bind = function (event, func) {
-      var arrEvents =  event.trim().split(" ")
+    __.prototype.bind = function (event, func) {
       if (this.nodes instanceof Array) {
         this.each(function (item, index, array) {
-          arrEvents.forEach(function (evt) {
-            item.addEventListener(evt, func, false);
-           })
+          item.addEventListener(event, func, false);
         });
       } else {
         this.nodes.addEventListener(event, func, false);
@@ -434,6 +435,13 @@ __.prototype.bind = function (event, func) {
           array.splice(array.indexOf(node), 1)
     }
     // End of PRIVATE //
+__.prototype.css = function (rule, value) { 
+  rule = rule.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+  this.forEach(function (node) { 
+    node.style[rule] = value;
+  })
+  return this;
+}
     //Return new  __()
 return function (nodes, context) {
     var doc = (context) ? context : document;

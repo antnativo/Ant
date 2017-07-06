@@ -21,6 +21,7 @@ const gulp = require('gulp'),
       , 'src/dom.js'
       , 'src/events.js'
       , 'src/private.js'
+      , 'src/style.js'
       , 'src/wrappers/wrapper-end.js'
     ]
     , testingScripts: ['tests/scripts/*.js' ]

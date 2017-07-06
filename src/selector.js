@@ -4,7 +4,8 @@
     }
     function setCurrentNode(self, value, noHistory) {
       self.nodes = value;
-
+      self.length = 0 
+      Array.prototype.splice.apply(self, [0, value.length].concat(value));
       (self.history.length == 0 || !noHistory || noHistory != "undefined") ? self.history.push(value.slice()) : null;
     }
     function converToArray(value) {

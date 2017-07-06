@@ -1,4 +1,5 @@
 function __(nodes, context) {
+       Array.call(this)
       this.nodes = [];
       this.document = context;
       this.history = []
@@ -7,4 +8,6 @@ function __(nodes, context) {
         this.find(nodes);
       this.length = this.nodes.length
       return this;
-    }
+}
+__.prototype = Object.create(Array.prototype);
+__.prototype.constructor = __;
