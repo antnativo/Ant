@@ -18,3 +18,6 @@
       this.nodes.length = 1;
       return this;
     }
+    __.prototype.addBack = function () { 
+      this.previousSelectors[this.previousSelectors - 2]
+    }

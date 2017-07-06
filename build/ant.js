@@ -36,7 +36,6 @@ function writeHistory() {
       }
     }
     function queryCSS(self, str) {
-      debugger
       var len = self.history.length,
         previousSelectors = self.previousSelectors.length ? self.previousSelectors[self.previousSelectors.length -1] : "";
       if(this.nodes && this.nodes.length == 1){
@@ -72,6 +71,7 @@ function writeHistory() {
       } else {
         throw new Error("Unable to find node")
       }
+      writeHistory.call(this);
       return this;
       //(<)(\w+)(\s+)([\w="'])*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>)) 
     };
@@ -94,6 +94,9 @@ function writeHistory() {
       writeHistory.call(this)
       this.nodes.length = 1;
       return this;
+    }
+    __.prototype.addBack = function () { 
+      this.previousSelectors[this.previousSelectors - 2]
     }
     //DOM Manipulation
   __.prototype.contents = function () {
