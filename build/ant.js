@@ -67,7 +67,7 @@ function __(nodes, context) {
         convertToArrayAndSetNode(this, nodes);
       } else if (typeof nodes == "string") {
         queryCSS(this, nodes.trim());
-      } else if (nodes instanceof HTMLElement || nodes instanceof Window) {
+      } else if (nodes instanceof HTMLElement || nodes instanceof Window || nodes instanceof Document) {
         setCurrentNode(this, [nodes]);
       } else {
         throw new Error("Unable to find node")
