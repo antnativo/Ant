@@ -170,13 +170,12 @@
       return this;
     };
     __.prototype.parent = function () {
-      console.log(arguments.callee)
+      console.log(arguments.callee.name)
       var parents = []
       this.each(function (item) { 
         parents.push(item.parentNode)
       })
-      setCurrentNode(this, parents)
-      return this;
+      return new __(parents);
     }
     __.prototype.is = function (value) {
       var isSame = false;
