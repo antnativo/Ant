@@ -1,13 +1,14 @@
 var $ant;
 (function () {
   $ant.query = (function () { 
-function __(nodes,context) {
-      this.nodes;
+function __(nodes, context) {
+      this.nodes = [];
       this.document = context;
       this.history = []
-      this.previousSelectors = []  ;
-      this.find(nodes);
-      this.length = this.nodes.length;
+      this.previousSelectors = [];
+      if(nodes)
+        this.find(nodes);
+      this.length = this.nodes.length
       return this;
     }
 // Private //
@@ -66,7 +67,7 @@ function __(nodes,context) {
         convertToArrayAndSetNode(this, nodes);
       } else if (typeof nodes == "string") {
         queryCSS(this, nodes.trim());
-      } else if (nodes instanceof HTMLElement) {
+      } else if (nodes instanceof HTMLElement || nodes instanceof Window) {
         setCurrentNode(this, [nodes]);
       } else {
         throw new Error("Unable to find node")
@@ -96,9 +97,15 @@ function __(nodes,context) {
       return this;
     }
     __.prototype.addBack = function () { 
-      var prevNodes = this.previousSelectors[this.previousSelectors - 2]
-      setCurrentNode(this, this.node.concat(prevNodes))
+      var prevNodes = this.history[this.history.length - 2]
+      setCurrentNode(this, this.nodes.concat(prevNodes))
       return this;
+    }
+    __.prototype.inArray = function (value, array) { 
+      if (array instanceof Array)
+        return array.indexOf(value)
+      else
+        return this;  
     }
     //DOM Manipulation
   __.prototype.contents = function () {
@@ -272,10 +279,13 @@ function __(nodes,context) {
       return this;
     };
     //Events 
-    __.prototype.bind = function (event, func) {
+__.prototype.bind = function (event, func) {
+      var arrEvents =  event.trim().split(" ")
       if (this.nodes instanceof Array) {
         this.each(function (item, index, array) {
-          item.addEventListener(event, func, false);
+          arrEvents.forEach(function (evt) {
+            item.addEventListener(evt, func, false);
+           })
         });
       } else {
         this.nodes.addEventListener(event, func, false);

@@ -1,8 +1,11 @@
     //Events 
-    __.prototype.bind = function (event, func) {
+__.prototype.bind = function (event, func) {
+      var arrEvents =  event.trim().split(" ")
       if (this.nodes instanceof Array) {
         this.each(function (item, index, array) {
-          item.addEventListener(event, func, false);
+          arrEvents.forEach(function (evt) {
+            item.addEventListener(evt, func, false);
+           })
         });
       } else {
         this.nodes.addEventListener(event, func, false);

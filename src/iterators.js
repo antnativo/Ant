@@ -19,7 +19,13 @@
       return this;
     }
     __.prototype.addBack = function () { 
-      var prevNodes = this.previousSelectors[this.previousSelectors - 2]
-      setCurrentNode(this, this.node.concat(prevNodes))
+      var prevNodes = this.history[this.history.length - 2]
+      setCurrentNode(this, this.nodes.concat(prevNodes))
       return this;
+    }
+    __.prototype.inArray = function (value, array) { 
+      if (array instanceof Array)
+        return array.indexOf(value)
+      else
+        return this;  
     }
