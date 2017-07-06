@@ -19,5 +19,7 @@
       return this;
     }
     __.prototype.addBack = function () { 
-      this.previousSelectors[this.previousSelectors - 2]
+      var prevNodes = this.previousSelectors[this.previousSelectors - 2]
+      setCurrentNode(this, this.node.concat(prevNodes))
+      return this;
     }

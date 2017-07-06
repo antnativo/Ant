@@ -1,5 +1,5 @@
 // Private //
-function writeHistory() {
+    function writeHistory() {
       this.history.push(this.nodes.slice())
     }
     function setCurrentNode(self, value, noHistory) {
