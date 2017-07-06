@@ -107,6 +107,9 @@ function __(nodes, context) {
       else
         return this;  
     }
+    __.prototype.size = function () { 
+      return length;
+    }
     //DOM Manipulation
   __.prototype.contents = function () {
       writeHistory.call(this)

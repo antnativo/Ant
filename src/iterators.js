@@ -29,3 +29,6 @@
       else
         return this;  
     }
+    __.prototype.size = function () { 
+      return length;
+    }
