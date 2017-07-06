@@ -169,3 +169,29 @@
       }
       return this;
     };
+    __.prototype.parent = function () {
+      console.log(arguments.callee)
+      var parents = []
+      this.each(function (item) { 
+        parents.push(item.parentNode)
+      })
+      setCurrentNode(this, parents)
+      return this;
+    }
+    __.prototype.is = function (value) {
+      var isSame = false;
+      switch (typeof value == "string") { 
+        case true:
+          var testNode = document.createElement(value)
+          isSame = this.nodes.every(function (item) { 
+              item.tagName.toLowerCase() == testNode.tagName.toLowerCase()
+          })
+          break;
+        default:
+          isSame = this.nodes.every(function (item) { 
+              item.isEqualNode(value)
+          })  
+          break;  
+      }
+      return isSame;
+     }
