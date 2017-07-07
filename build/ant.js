@@ -69,6 +69,7 @@ __.prototype.constructor = __;
         var tmpNode = document.createElement("div")
         tmpNode.innerHTML = nodes;
         nodes = tmpNode.childNodes
+        tmpNode = null;
       }
       if (nodes instanceof Array) {
         setCurrentNode(this, nodes);
