@@ -49,9 +49,14 @@
 }
  // PUBLIC //
     __.prototype.find = function (nodes) {
+      if (/(<)(\w+)((\s+)([\w="'])*)*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>))/gi.test(nodes)) {
+        var tmpNode = document.createElement("div")
+        tmpNode.innerHTML = nodes;
+        nodes = tmpNode.childNodes
+      }
       if (nodes instanceof Array) {
         setCurrentNode(this, nodes);
-      } else if (nodes instanceof HTMLCollection) {
+      } else if (nodes instanceof HTMLCollection || nodes instanceof NodeList)  {
         convertToArrayAndSetNode(this, nodes);
       } else if (typeof nodes == "string") {
         queryCSS(this, nodes.trim());
@@ -62,5 +67,6 @@
       }
       writeHistory.call(this);
       return this;
-      //(<)(\w+)(\s+)([\w="'])*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>)) 
+      
     };
+    __.prototype.noConflict = function () { }
