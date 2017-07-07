@@ -328,6 +328,7 @@ __.prototype.constructor = __;
       }
       return this;
     };
+    __.prototype.on = __.prototype.bind;
     __.prototype.unbind = function (event, func) {
       if (this.nodes instanceof Array && typeof func == "function") {
         this.each(function (item, index, array) {
