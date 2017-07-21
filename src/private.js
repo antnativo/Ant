@@ -41,12 +41,17 @@
       document.head.appendChild(jsnode)
     }
     function compileInlineJavaScript(el) {
-      if (typeof el != "undefined" && typeof el.nodeName != "undefined" && el.nodeName != null && el.nodeName.toUpperCase().localeCompare('SCRIPT') == 0 && (!el.type || el.type.localeCompare('text/javascript') == 0) && !el.src) {
-        window['eval'].call(window, el.innerHTML)
-        return true;
-      } else if (typeof el != "undefined" && typeof el.nodeName != "undefined" && el.nodeName != null && el.nodeName.toUpperCase().localeCompare('SCRIPT') == 0 && (!el.type || el.type.localeCompare('text/javascript') == 0) && el.src) { // Added Condition to find script nodes with src  -- AC 5/26/2016
-        createScriptNodeFromNode(el) // Used to load external script and remove node once loaded -- AC 5/26/2016
-        return true;
+      if (typeof el == "undefined" || typeof el.nodeName == "undefined" || !el.nodeName ||el.nodeType != 1 || el.tagName.toLowerCase() != "script" || !(!el.type || el.type.localeCompare('text/javascript') == 0))
+        return false;
+      switch (el.src) { 
+        case "":
+          window['eval'].call(window, el.innerHTML)
+          return true;  
+          break;
+        case true:
+          createScriptNodeFromNode(el) // Used to load external script and remove node once loaded -- AC 5/26/2016
+          return true;
+          break;  
       }
       return false;
     }

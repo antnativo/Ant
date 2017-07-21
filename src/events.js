@@ -1,4 +1,19 @@
-    //Events 
+    //PRIVATE -EVENTS
+    function handleReadyEvent(item,func) { 
+      switch (item instanceof HTMLDocument || item instanceof Window) {
+        case true:
+          var status = item.readyState || item.document.readyState;
+          if (status != "complete")
+            (item instanceof HTMLDocument) ? item.addEventListener("load", func, false) : item.document.addEventListener("load", func, false);
+          else
+            func();
+          break;
+        default:
+          func()
+          break;
+      }
+    }    
+    //Events
     __.prototype.bind = function (event, func) {
       if (this.nodes instanceof Array) {
         this.each(function (item, index, array) {
@@ -34,3 +49,15 @@
       }
       return this;
     };
+    __.prototype.ready = function (func) { 
+      if (typeof func == "function") {
+        if (this.nodes instanceof Array) {
+          this.each(function (item, index, array) {
+            handleReadyEvent(item,func)
+          })
+        } else { 
+          handleReadyEvent(this.nodes,func)
+        }
+      }
+      return this;
+    }

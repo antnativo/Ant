@@ -317,7 +317,22 @@ __.prototype.constructor = __;
       }
       return isSame;
      }
-    //Events 
+    //PRIVATE -EVENTS
+    function handleReadyEvent(item,func) { 
+      switch (item instanceof HTMLDocument || item instanceof Window) {
+        case true:
+          var status = item.readyState || item.document.readyState;
+          if (status != "complete")
+            (item instanceof HTMLDocument) ? item.addEventListener("load", func, false) : item.document.addEventListener("load", func, false);
+          else
+            func();
+          break;
+        default:
+          func()
+          break;
+      }
+    }    
+    //Events
     __.prototype.bind = function (event, func) {
       if (this.nodes instanceof Array) {
         this.each(function (item, index, array) {
@@ -353,6 +368,18 @@ __.prototype.constructor = __;
       }
       return this;
     };
+    __.prototype.ready = function (func) { 
+      if (typeof func == "function") {
+        if (this.nodes instanceof Array) {
+          this.each(function (item, index, array) {
+            handleReadyEvent(item,func)
+          })
+        } else { 
+          handleReadyEvent(this.nodes,func)
+        }
+      }
+      return this;
+    }
 // PRIVATE //
     function compileScripts(item) {
       var scripts = converToArray(item.getElementsByTagName("script"));
@@ -396,12 +423,17 @@ __.prototype.constructor = __;
       document.head.appendChild(jsnode)
     }
     function compileInlineJavaScript(el) {
-      if (typeof el != "undefined" && typeof el.nodeName != "undefined" && el.nodeName != null && el.nodeName.toUpperCase().localeCompare('SCRIPT') == 0 && (!el.type || el.type.localeCompare('text/javascript') == 0) && !el.src) {
-        window['eval'].call(window, el.innerHTML)
-        return true;
-      } else if (typeof el != "undefined" && typeof el.nodeName != "undefined" && el.nodeName != null && el.nodeName.toUpperCase().localeCompare('SCRIPT') == 0 && (!el.type || el.type.localeCompare('text/javascript') == 0) && el.src) { // Added Condition to find script nodes with src  -- AC 5/26/2016
-        createScriptNodeFromNode(el) // Used to load external script and remove node once loaded -- AC 5/26/2016
-        return true;
+      if (typeof el == "undefined" || typeof el.nodeName == "undefined" || !el.nodeName ||el.nodeType != 1 || el.tagName.toLowerCase() != "script" || !(!el.type || el.type.localeCompare('text/javascript') == 0))
+        return false;
+      switch (el.src) { 
+        case "":
+          window['eval'].call(window, el.innerHTML)
+          return true;  
+          break;
+        case true:
+          createScriptNodeFromNode(el) // Used to load external script and remove node once loaded -- AC 5/26/2016
+          return true;
+          break;  
       }
       return false;
     }
