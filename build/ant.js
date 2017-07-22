@@ -65,8 +65,8 @@ __.prototype.constructor = __;
 }
  // PUBLIC //
     __.prototype.find = function (nodes) {
-      if (/(<)(\w+)((\s+)([\w="'])*)*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>))/gi.test(nodes)) {
-        var tmpNode = document.createElement("div")
+      if(/(<)(\w+)((\s+)([\w="'\S])*)*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>))/gi.test(nodes)){
+      //if (/(<)(\w+)((\s+)([\w="'])*)*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>))/gi.test(nodes)) {        var tmpNode = document.createElement("div")
         tmpNode.innerHTML = nodes;
         nodes = tmpNode.childNodes
         tmpNode = null;
@@ -77,7 +77,7 @@ __.prototype.constructor = __;
         convertToArrayAndSetNode(this, nodes);
       } else if (typeof nodes == "string") {
         queryCSS(this, nodes.trim());
-      } else if (nodes instanceof HTMLElement || nodes instanceof Window || nodes instanceof Document) {
+      } else if ( (nodes.tagName && ["iframe"].indexOf(nodes.tagName.toLowerCase()) != -1) ||  nodes  instanceof HTMLElement || nodes instanceof Window || nodes instanceof Document) {
         setCurrentNode(this, [nodes]);
       } else {
         throw new Error("Unable to find node")
@@ -211,7 +211,15 @@ __.prototype.constructor = __;
       return insertNode.call(this, "afterbegin", value);
     }
     __.prototype.children = function () {
-      setCurrentNode(this, converToArray(this.nodes.children));
+      if (this.nodes instanceof Array) { 
+        var kids = [];
+        this.nodes.each(function (item) { 
+          //if(item instanceof HTMLElement)
+          kids = kids.concat(converToArray(item.children))
+        })
+        setCurrentNode(this,kids)
+      } else 
+       setCurrentNode(this, converToArray(this.nodes.children));
       return this;
     };
     __.prototype.remove = function () {
@@ -293,7 +301,6 @@ __.prototype.constructor = __;
       return this;
     };
     __.prototype.parent = function () {
-      console.log(arguments.callee.name)
       var parents = []
       this.each(function (item) { 
         parents.push(item.parentNode)

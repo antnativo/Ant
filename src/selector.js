@@ -49,8 +49,8 @@
 }
  // PUBLIC //
     __.prototype.find = function (nodes) {
-      if (/(<)(\w+)((\s+)([\w="'])*)*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>))/gi.test(nodes)) {
-        var tmpNode = document.createElement("div")
+      if(/(<)(\w+)((\s+)([\w="'\S])*)*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>))/gi.test(nodes)){
+      //if (/(<)(\w+)((\s+)([\w="'])*)*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>))/gi.test(nodes)) {        var tmpNode = document.createElement("div")
         tmpNode.innerHTML = nodes;
         nodes = tmpNode.childNodes
         tmpNode = null;
@@ -61,7 +61,7 @@
         convertToArrayAndSetNode(this, nodes);
       } else if (typeof nodes == "string") {
         queryCSS(this, nodes.trim());
-      } else if (nodes instanceof HTMLElement || nodes instanceof Window || nodes instanceof Document) {
+      } else if ( (nodes.tagName && ["iframe"].indexOf(nodes.tagName.toLowerCase()) != -1) ||  nodes  instanceof HTMLElement || nodes instanceof Window || nodes instanceof Document) {
         setCurrentNode(this, [nodes]);
       } else {
         throw new Error("Unable to find node")

@@ -88,7 +88,15 @@
       return insertNode.call(this, "afterbegin", value);
     }
     __.prototype.children = function () {
-      setCurrentNode(this, converToArray(this.nodes.children));
+      if (this.nodes instanceof Array) { 
+        var kids = [];
+        this.nodes.each(function (item) { 
+          //if(item instanceof HTMLElement)
+          kids = kids.concat(converToArray(item.children))
+        })
+        setCurrentNode(this,kids)
+      } else 
+       setCurrentNode(this, converToArray(this.nodes.children));
       return this;
     };
     __.prototype.remove = function () {
@@ -170,7 +178,6 @@
       return this;
     };
     __.prototype.parent = function () {
-      console.log(arguments.callee.name)
       var parents = []
       this.each(function (item) { 
         parents.push(item.parentNode)
