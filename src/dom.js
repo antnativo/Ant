@@ -200,4 +200,14 @@
           break;  
       }
       return isSame;
-     }
+    }
+    __.prototype.width = function () { 
+      switch (this.nodes.length) { 
+        case 0:
+          return null;
+          break
+        default:
+          return this.nodes[0].getBoundingClientRect().width
+          break;
+      }
+    }

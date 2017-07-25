@@ -73,12 +73,14 @@ __.prototype.constructor = __;
       }
       if (nodes instanceof Array) {
         setCurrentNode(this, nodes);
-      } else if (nodes instanceof HTMLCollection || nodes instanceof NodeList)  {
+      } else if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
         convertToArrayAndSetNode(this, nodes);
       } else if (typeof nodes == "string") {
         queryCSS(this, nodes.trim());
-      } else if ( (nodes.tagName && ["iframe"].indexOf(nodes.tagName.toLowerCase()) != -1) ||  nodes  instanceof HTMLElement || nodes instanceof Window || nodes instanceof Document) {
+      } else if ((nodes.tagName && ["iframe"].indexOf(nodes.tagName.toLowerCase()) != -1) || nodes instanceof HTMLElement || nodes instanceof Window || nodes instanceof Document) {
         setCurrentNode(this, [nodes]);
+      } else if (nodes.constructor.name == "K" && nodes.length){
+        setCurrentNode(this, Array.prototype.slice.apply(nodes))
       } else {
         throw new Error("Unable to find node")
       }
@@ -97,7 +99,8 @@ __.prototype.constructor = __;
       return this;
     };
     __.prototype.andSelf = function () {
-      this.nodes = this.history.pop();
+      setCurrentNode(this,this.history.pop())
+      return this;
     };
     __.prototype.currentNodes = function () {
       return { "self": this, "nodes": this.nodes };
@@ -120,6 +123,16 @@ __.prototype.constructor = __;
     }
     __.prototype.size = function () { 
       return length;
+    }
+    __.prototype.filter = function (search,match) { 
+      switch (search.constructor.name) { 
+        case "String":
+          return this.find(search)  
+          break;
+        case "Array":
+          return this; // Incomplete --AC
+          break;  
+      }
     }
     //DOM Manipulation
   __.prototype.contents = function () {
@@ -323,7 +336,17 @@ __.prototype.constructor = __;
           break;  
       }
       return isSame;
-     }
+    }
+    __.prototype.width = function () { 
+      switch (this.nodes.length) { 
+        case 0:
+          return null;
+          break
+        default:
+          return this.nodes[0].getBoundingClientRect().width
+          break;
+      }
+    }
     //PRIVATE -EVENTS
     function handleReadyEvent(item,func) { 
       switch (item instanceof HTMLDocument || item instanceof Window) {

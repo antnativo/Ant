@@ -57,12 +57,14 @@
       }
       if (nodes instanceof Array) {
         setCurrentNode(this, nodes);
-      } else if (nodes instanceof HTMLCollection || nodes instanceof NodeList)  {
+      } else if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
         convertToArrayAndSetNode(this, nodes);
       } else if (typeof nodes == "string") {
         queryCSS(this, nodes.trim());
-      } else if ( (nodes.tagName && ["iframe"].indexOf(nodes.tagName.toLowerCase()) != -1) ||  nodes  instanceof HTMLElement || nodes instanceof Window || nodes instanceof Document) {
+      } else if ((nodes.tagName && ["iframe"].indexOf(nodes.tagName.toLowerCase()) != -1) || nodes instanceof HTMLElement || nodes instanceof Window || nodes instanceof Document) {
         setCurrentNode(this, [nodes]);
+      } else if (nodes.constructor.name == "K" && nodes.length){
+        setCurrentNode(this, Array.prototype.slice.apply(nodes))
       } else {
         throw new Error("Unable to find node")
       }
