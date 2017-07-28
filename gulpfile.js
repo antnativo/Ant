@@ -1,4 +1,5 @@
-const gulp = require('gulp'),
+const server = require('./tests/server'),
+  gulp = require('gulp'),
   concat = require('gulp-concat'),
   //less = require('gulp-less'),
   uglify = require('gulp-uglify'),
@@ -30,6 +31,16 @@ const gulp = require('gulp'),
 
 ///Tasks
 //Build Script
+gulp.task('startServer', [], () => {
+  server.start((err) => { if (err) { throw err; } console.log(`Server running at: ${server.info.uri}`); });
+})
+gulp.task('stopServer', [], () => {
+  server.stop();
+})
+gulp.task('moveJS', [], () => {
+  return gulp.src(['./build/*'])
+    .pipe(gulp.dest(paths.loaclHostPublicDirectory + "./tests/build"), true);
+});
 gulp.task('buildTestScript', [], () => {
   del(['build/ant.js']);
   return gulp.src(paths.basescript)
@@ -38,11 +49,11 @@ gulp.task('buildTestScript', [], () => {
     .pipe(gulp.dest('build'));
 });
 //Test Script
-gulp.task('unittest', ['buildTestScript'], () => {
+gulp.task('unittest', ['buildTestScript','moveJS'], () => {
   return gulp.src(paths.tests).pipe(qunit());
 });
 //Minify Script
-gulp.task('buildScript', ['unittest'], () => {
+gulp.task('buildScript', [], () => {
   del(['build/ant.min.js']);
   del(['build/ant.min.js.map']);
   return gulp.src(['build/ant.js'])
@@ -59,4 +70,4 @@ gulp.task('watch', ['buildScript'], function () {
 // The default task (called when you run `gulp` from cli)
 gulp.task('default', ['watch']);
 gulp.task("build", ['buildScript'])
-gulp.task("test", ['unittest'], () => {  })
+gulp.task("test", ['startServer','unittest'], () => { server.stop(); })
