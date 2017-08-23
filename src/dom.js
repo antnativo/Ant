@@ -75,6 +75,7 @@
       }
       return this;
     };
+    __.prototype.appendTo = __.prototype.append;
     __.prototype.after = function (value) {
       return insertNode.call(this, "afterend", value);
     }
