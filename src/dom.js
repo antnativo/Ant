@@ -12,7 +12,7 @@
       return this;
     }
     __.prototype.html = function (value) {
-      if (typeof value == "string" && value.length > 0) {
+      if (typeof value == "string" && value) {
         switch (this.nodes instanceof Array) {
           case true:
             var that = this;
@@ -24,20 +24,8 @@
             insertHTMLAndJS(this, value, this.nodes, true)
             break;
         }
-      } else if (typeof value == "string" == 0) {
-        switch (this.nodes instanceof Array) {
-          case true:
-            var that = this;
-            this.each(function (item, index, array) {
-              insertHTMLAndJS(that, value, item)
-            })
-            break;
-          default:
-            insertHTMLAndJS(this, value, this.nodes)
-            break;
-        }
       } else {
-        return (this.nodes instanceof Array) ? null : this.nodes.innerHTML;
+        return (this.nodes instanceof Array) ? this.nodes[0].innerHTML : this.nodes.innerHTML;
       }
     }
     __.prototype.append = function (node) {

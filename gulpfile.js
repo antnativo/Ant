@@ -37,9 +37,9 @@ gulp.task('startServer', [], () => {
 gulp.task('stopServer', [], () => {
   server.stop();
 })
-gulp.task('moveJS', [], () => {
+gulp.task('moveTestJS', ['buildTestScript'], () => {
   return gulp.src(['./build/*'])
-    .pipe(gulp.dest(paths.loaclHostPublicDirectory + "./tests/build"), true);
+    .pipe(exec('ditto build/* tests/build/'), true);
 });
 gulp.task('buildTestScript', [], () => {
   del(['build/ant.js']);
@@ -49,9 +49,18 @@ gulp.task('buildTestScript', [], () => {
     .pipe(gulp.dest('build'));
 });
 //Test Script
-gulp.task('unittest', ['buildTestScript','moveJS'], () => {
-  return gulp.src(paths.tests).pipe(qunit());
+gulp.task('unittest', ['moveTestJS'], () => {
+  return gulp.src(paths.tests).pipe(qunit());  
 });
+gulp.task('buildUnitTest', ['moveTestJS'], () => { 
+  var unitTest = qunit();
+  unitTest._transformState.writecb = function () { console.log("Begining Test Results Output")}
+  unitTest._transformState.afterTransform()
+  unitTest._events.error = function () { console.log("ERROR: ", arguments); process.exit(1) }
+  unitTest._events.end = function () { }
+  unitTest._events.finish = function () { process.exit(0); }
+  return gulp.src(paths.tests).pipe(unitTest);
+})
 //Minify Script
 gulp.task('buildScript', [], () => {
   del(['build/ant.min.js']);
@@ -65,9 +74,12 @@ gulp.task('buildScript', [], () => {
 });
 //Watch File Changes and Run Tasks
 gulp.task('watch', ['buildScript'], function () {
-  gulp.watch(paths.basescript.concat(paths.testingScripts), ['buildScript']);
+  //gulp.watch(paths.basescript.concat(paths.testingScripts), ['buildScript']);
+  gulp.watch(paths.basescript.concat(paths.testingScripts), ['unittest']);
 });
 // The default task (called when you run `gulp` from cli)
 gulp.task('default', ['watch']);
-gulp.task("build", ['buildScript'])
-gulp.task("test", ['startServer','unittest'], () => { server.stop(); })
+gulp.task("build", ['buildUnitTest','buildScript'])
+gulp.task("test", ['startServer', 'unittest'], () => { server.stop(); })
+gulp.task("startserver", [], () => { server.start(); })
+gulp.task("stopserver", [], () => { server.stop(); })

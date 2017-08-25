@@ -15,8 +15,29 @@ server.register(require('inert'), (err) => {
     path: '/build/{filename}',
     handler: (request, reply) => {
         //console.log(/build/' + decodeURIComponent(request.params.filename))
-        reply.file( '.build/' + decodeURIComponent(request.params.filename))
+        reply.file( './tests/build/' + decodeURIComponent(request.params.filename))
     }
+  });
+  server.route({
+    method: 'GET',
+    path: '/configuration/{filename}',
+    handler: (request, reply) => {
+        //console.log(/build/' + decodeURIComponent(request.params.filename))
+        reply.file( './tests/configuration/' + decodeURIComponent(request.params.filename))
+    }
+  });
+  server.route({
+    method: 'GET',
+    path: '/bower_components',
+    handler:handerFileRequest
+  });
+  server.route({
+    method: 'GET',
+    path: '/scripts/{filename}',
+    handler: (request, reply) => {
+      //console.log(/build/' + decodeURIComponent(request.params.filename))
+      reply.file( './tests/scripts/' + decodeURIComponent(request.params.filename))
+  }
   });
 });
 server.register(require('inert'), (err) => {
