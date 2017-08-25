@@ -65,20 +65,24 @@ __.prototype.constructor = __;
 }
  // PUBLIC //
     __.prototype.find = function (nodes) {
-      if (/(<)(\w+)((\s+)([\w="'])*)*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>))/gi.test(nodes)) {
-        var tmpNode = document.createElement("div")
+      if(/(<)(\w+)((\s+)([\w="'\S])*)*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>))/gi.test(nodes)){
+      //if (/(<)(\w+)((\s+)([\w="'])*)*(>)[\w\s\d\!@#$%^&*()_\-+={}\[\]|\\:;"',.?\/~`Œ„´‰ˇÁ¨ˆØ∏ÅÍÎ˝ÓÔÒÚ¸˛˜Â]*((<)(\/)\2{0,1}(>))/gi.test(nodes)) {        var tmpNode = document.createElement("div")
         tmpNode.innerHTML = nodes;
         nodes = tmpNode.childNodes
         tmpNode = null;
       }
-      if (nodes instanceof Array) {
+      if (nodes instanceof Array && !(nodes instanceof __ )) {
         setCurrentNode(this, nodes);
-      } else if (nodes instanceof HTMLCollection || nodes instanceof NodeList)  {
+      } else if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
         convertToArrayAndSetNode(this, nodes);
       } else if (typeof nodes == "string") {
         queryCSS(this, nodes.trim());
-      } else if (nodes instanceof HTMLElement || nodes instanceof Window || nodes instanceof Document) {
+      } else if ((nodes.tagName && ["iframe"].indexOf(nodes.tagName.toLowerCase()) != -1) || nodes instanceof HTMLElement || nodes instanceof Window || nodes instanceof Document) {
         setCurrentNode(this, [nodes]);
+      } else if (((typeof jQuery  != "undefined" && nodes instanceof jQuery) || (typeof nQuery != "undefined" && nodes instanceof nQuery) ) && nodes.length){
+        setCurrentNode(this, Array.prototype.slice.apply(nodes))
+      } else if (nodes instanceof __ && nodes.nodes && nodes.nodes.length) {
+        setCurrentNode(this, Array.prototype.slice.apply(nodes.nodes))
       } else {
         throw new Error("Unable to find node")
       }
@@ -97,7 +101,8 @@ __.prototype.constructor = __;
       return this;
     };
     __.prototype.andSelf = function () {
-      this.nodes = this.history.pop();
+      setCurrentNode(this,this.history.pop())
+      return this;
     };
     __.prototype.currentNodes = function () {
       return { "self": this, "nodes": this.nodes };
@@ -121,6 +126,16 @@ __.prototype.constructor = __;
     __.prototype.size = function () { 
       return length;
     }
+    __.prototype.filter = function (search,match) { 
+      switch (search.constructor.name) { 
+        case "String":
+          return this.find(search)  
+          break;
+        case "Array":
+          return this; // Incomplete --AC
+          break;  
+      }
+    }
     //DOM Manipulation
   __.prototype.contents = function () {
       writeHistory.call(this)
@@ -135,7 +150,7 @@ __.prototype.constructor = __;
       return this;
     }
     __.prototype.html = function (value) {
-      if (typeof value == "string" && value.length > 0) {
+      if (typeof value == "string" && value) {
         switch (this.nodes instanceof Array) {
           case true:
             var that = this;
@@ -147,20 +162,8 @@ __.prototype.constructor = __;
             insertHTMLAndJS(this, value, this.nodes, true)
             break;
         }
-      } else if (typeof value == "string" == 0) {
-        switch (this.nodes instanceof Array) {
-          case true:
-            var that = this;
-            this.each(function (item, index, array) {
-              insertHTMLAndJS(that, value, item)
-            })
-            break;
-          default:
-            insertHTMLAndJS(this, value, this.nodes)
-            break;
-        }
       } else {
-        return (this.nodes instanceof Array) ? null : this.nodes.innerHTML;
+        return (this.nodes instanceof Array) ? this.nodes[0].innerHTML : this.nodes.innerHTML;
       }
     }
     __.prototype.append = function (node) {
@@ -198,6 +201,7 @@ __.prototype.constructor = __;
       }
       return this;
     };
+    __.prototype.appendTo = __.prototype.append;
     __.prototype.after = function (value) {
       return insertNode.call(this, "afterend", value);
     }
@@ -211,7 +215,15 @@ __.prototype.constructor = __;
       return insertNode.call(this, "afterbegin", value);
     }
     __.prototype.children = function () {
-      setCurrentNode(this, converToArray(this.nodes.children));
+      if (this.nodes instanceof Array) { 
+        var kids = [];
+        this.nodes.each(function (item) { 
+          //if(item instanceof HTMLElement)
+          kids = kids.concat(converToArray(item.children))
+        })
+        setCurrentNode(this,kids)
+      } else 
+       setCurrentNode(this, converToArray(this.nodes.children));
       return this;
     };
     __.prototype.remove = function () {
@@ -293,7 +305,6 @@ __.prototype.constructor = __;
       return this;
     };
     __.prototype.parent = function () {
-      console.log(arguments.callee.name)
       var parents = []
       this.each(function (item) { 
         parents.push(item.parentNode)
@@ -316,7 +327,17 @@ __.prototype.constructor = __;
           break;  
       }
       return isSame;
-     }
+    }
+    __.prototype.width = function () { 
+      switch (this.nodes.length) { 
+        case 0:
+          return null;
+          break
+        default:
+          return this.nodes[0].getBoundingClientRect().width
+          break;
+      }
+    }
     //PRIVATE -EVENTS
     function handleReadyEvent(item,func) { 
       switch (item instanceof HTMLDocument || item instanceof Window) {
@@ -533,7 +554,7 @@ __.prototype.toggle = function (className) {
 }
     //Return new  __()
 return function (nodes, context) {
-    var doc = (context) ? context : document;
+    var doc = (context) ? (context instanceof __)? context.nodes[0] : context : document;
       return new __(nodes,doc);
     }
    })();

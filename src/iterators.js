@@ -8,7 +8,8 @@
       return this;
     };
     __.prototype.andSelf = function () {
-      this.nodes = this.history.pop();
+      setCurrentNode(this,this.history.pop())
+      return this;
     };
     __.prototype.currentNodes = function () {
       return { "self": this, "nodes": this.nodes };
@@ -31,4 +32,14 @@
     }
     __.prototype.size = function () { 
       return length;
+    }
+    __.prototype.filter = function (search,match) { 
+      switch (search.constructor.name) { 
+        case "String":
+          return this.find(search)  
+          break;
+        case "Array":
+          return this; // Incomplete --AC
+          break;  
+      }
     }

@@ -1,22 +1,223 @@
 <!doctype html>
 <html>
-<head>
+<head  profile="http://gmpg.org/xfn/11">
   <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>simple test</title>
-
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.22.0.css">
-  <script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+	<script  src="https://code.jquery.com/jquery-2.2.4.min.js"  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="  crossorigin="anonymous"></script>
+	<script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>	
+  <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
   <script src="http://code.jquery.com/qunit/qunit-1.22.0.js" type="text/javascript"></script>
   <script src="configuration/config.js" type="text/javascript"></script>
   <script src="configuration/log.js"></script>
   <script src="configuration/video-rules.js"></script>
   <script src="build/ant.js" type="text/javascript"></script> 
+  <link rel="stylesheet" href="http://test-sites.internal.nativo.net/testing/style.css" type="text/css" media="screen">
+  <link rel="icon" href="http://test-sites.internal.nativo.net/testing/images/favicon.ico">
+  <link rel="shortcut icon" href="http://test-sites.internal.nativo.net/testing/images/favicon.ico">
 </head>
 <body>
+	<iframe id="hiddenIframe" style="display:none !important;">
+		<html>
+			<head></head>
+			<body>iframebodytext</body>
+		<html>
+	</iframe>
   <div id="featured"></div>
   <div id="qunit"></div>
   <div id="container"></div>
   <!-- Tests Go Here :-->
-  <script src="scripts/test-selector.js" type="text/javascript"></script> 
+	<div id="head" class="clearfloat">
+    <div class="clearfloat">
+    <div id="logo" class="left"> 
+      <a href="article.html">
+        <img src="http://test-sites.internal.nativo.net/testing/images/logo.png" width="177" height="39" alt="">
+      </a>
+      <div id="tagline">trend, lifestyle, technology, and gadget magazine</div>
+  </div>
+  <div class="right"> 
+    <img src="http://test-sites.internal.nativo.net/testing/images/ads/468x60.gif" alt="" width="468" height="60"> 
+  </div>
+</div>
+<div id="navbar" class="clearfloat">
+  <ul id="page-bar" class="left clearfloat">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="directory.html">Directory</a></li>
+    <li><a href="article.html?ntv_tm=article">Article</a></li>
+    <li><a href="index.html">DFP</a>
+      <ul class="children">
+        <li class="cat-item"><a href="dfp_api.html">API</a></li>
+        <li class="cat-item"><a href="dfp_breakout.html">Breakout</a></li>
+        <li class="cat-item"><a href="dfp_demand.html">Demand</a></li>
+        <li class="cat-item"><a href="dfp_no_fill.html">No fill</a></li>
+        <li class="cat-item"><a href="dfp_passback.html">Passback</a></li>
+        <li class="cat-item"><a href="dfp_selector.html">Selector</a></li>
+        <li class="cat-item"><a href="dfp_standard.html">Standard</a></li>
+        <li class="cat-item"><a href="dfp_standard_safe.html">Standard Safe</a></li>
+        <li class="cat-item"><a href="dfp_testing.html">Testing</a></li>
+        <li class="cat-item"><a href="dfp.html">DFP</a></li>
+      </ul>
+    </li>
+    <li><a href="index.html">Other</a>
+      <ul class="children">
+	    <li><a href="dsp.html">DSP</a></li>
+	    <li><a href="hackathon.html">Hackathon</a></li>
+	    <li><a href="notmapped.html">Not Mapped</a></li>
+	    <li><a href="open_rtb.html">RTB</a></li>
+	    <li><a href="adunblocking.html">Ad(un)Blocking</a></li>Z
+		</ul>
+		</li>
+  </ul>
+  <form method="get" id="searchform" action="#">
+    <div id="search">
+      <input type="text" value="" name="s" id="s" class="field">
+      <input type="submit" id="searchsubmit" value="Search" class="button">
+    </div>
+  </form>
+</div>
+</div>
+	<div id="page" class="clearfloat">
+			<div id="top" class="clearfloat"><div id="headline">
+	<div class="title"><a href="article.html">Free CSS Template &amp; Wordpress Theme</a></div>
+	<div class="meta">[27 Dec 2007 | <a href="article.html">One Comment</a> | 481 views]</div>
+	<a href="article.html"> <img src="images/thumbs/burrito-cat.jpg" alt="" class="left" width="300" height="300"></a>
+	<p>Semscelerit id habitur orci aenean quis vestas at pede ac orci. Eufamet in aenean sed eu nam morbi dui velis sus phasellus. Insapien condimentum eget habitur orci nullamcorper lacus purus nam eu dapientum. Orcivel tempus quam nam id nullam proin vestique fauctor fuscing quis..</p>
+	<p>Nibhsed dui curabitur mauris tincidunt nam aenean inte ris vel lobortor. Aeneanconsectetus orci auctor ante dui fauctor intesque magna platea dolorem volutpat. Quisquequis ligula elis sed at lor orna nibh velit metuer nisl. Seddis nullamcorper accum alique nullam sce ut tor et condisse senean</p>
+	<a href="article.html">Read the full story »</a> </div>
+<div id="featured"> <img src="images/featured.png" width="72" height="17" alt="">
+	<div class="clearfloat"> <a href="article.html"> <img src="images/thumbs/fashion.jpg" alt="" class="left" width="100" height="65"></a>
+		<div class="info"><a href="article.html" class="title">Mollisfeugiat nunc.</a>
+			<p>Vestibulumsemper augue arcu gravida cursus magna ristique cum auctor libero condimentum.</p>
+		</div>
+	</div>
+	<div class="divider"><img src="images/divider.png" width="128" height="5" alt=""></div>
+	<div class="clearfloat"> <a href="article.html"> <img src="images/thumbs/wine.jpg" alt="" class="left" width="100" height="65"></a>
+		<div class="info"><a href="article.html" class="title">Acsentesque ipsum ut et.</a>
+			<p>Urnanulla semper ut neque tincidunt pretium id sus trices nulla orci. Nonummyvel estibulus elit loreet</p>
+		</div>
+	</div>
+	<div class="divider"><img src="images/divider.png" width="128" height="5" alt=""></div>
+	<div class="clearfloat"> <a href="article.html"> <img src="images/thumbs/ericsson.jpg" alt="" class="left" width="100" height="65"></a>
+		<div class="info"><a href="article.html" class="title">Idtincidunt condisse.</a>
+			<p> Idid in vel aenean non euisque amet hendrerit lacilis nibh condisse. Nonummyvel estibulus elit loreet</p>
+		</div>
+	</div>
+	<div class="divider"><img src="images/divider.png" width="128" height="5" alt=""></div>
+	<div class="clearfloat"> <a href="article.html"> <img src="images/thumbs/food.jpg" alt="" class="left" width="100" height="65"></a>
+		<div class="info"><a href="article.html" class="title">Morbiid in males</a>
+			<p>Vestiequisque ristibulum cumsan id maurientumst felis enim nonummy non ut et.</p>
+		</div>
+	</div>
+</div><div class="headline prx-location ntv1039845-124539-79842" id="ntv1039845-124539-79842">
+    
+    <style>
+        .ntv-table td {
+            padding: 2px;
+        }
+    </style>
+  </div>
+</div>
+			
+			<div id="middle" class="clearfloat"><img src="http://test-sites.internal.nativo.net/testing/images/category.png" class="clearfloat" alt="">
+ <div id="cat-1" class="category"> <span class="cat_title"><a href="article.html">Health and Hygiene</a></span>
+	 <p><a href="article.html">Health and hygiene for your body, from tips and tricks to medical reviews. This is the category description.</a></p>
+ </div>
+ <div id="cat-2" class="category"> <span class="cat_title"><a href="article.html">Fashion</a></span>
+	 <p><a href="article.html">You love fashion, huh? Great articles about international fashion brand here. This is the category description.</a></p>
+ </div>
+ <div id="cat-3" class="category"> <span class="cat_title"><a href="article.html">Food and Drinks</a></span>
+	 <p><a href="article.html">Anything related to foods and drinks. Restaurant and bistros, recipes, wines, and everything. This is a category description.</a></p>
+ </div>
+ <div id="cat-4" class="category"> <span class="cat_title"><a href="article.html">Movie and Music</a></span>
+	 <p><a href="article.html">Cool movie and music review at your desk! Never miss any article from Arthemia Demo! This is the category description.</a></p>
+ </div>
+ <div id="cat-5" class="category"> <span class="cat_title"><a href="article.html">Travel</a></span>
+	 <p><a href="article.html">Travel spots? Flight tips? All magnificent places from all over the world here. This is the category description.</a></p>
+ </div>
+</div>
+			<div id="bottom" class="clearfloat">
+	<div id="front-list">
+		<div class="clearfloat">
+			<h3 class="cat_title"><a href="article.html">Health and Hygiene</a> »</h3>
+			<span class="title"><a href="article.html">Elittemper mollisis ut maecenas</a></span> <br>
+			<span class="meta">[2 May 2008 | <a href="article.html">No Comment</a> | 153 views]</span>
+			<p><img class="alignleft size-full wp-image-41" style="float: left;" src="http://test-sites.internal.nativo.net/testing/images/thumbs/hygene.jpg" alt="" width="180" height="197">Gravidaestibulus purus ac justo condimentesque vel vitae condimentumsan vivamus non arcu. Habitudinat ut dapibulum semper laculis dui ac vel consectetuer ames elit. Fringdonec consequam ac faucibus felit nibh cras condimentum metuer quisque quismodo. Acsemper alique ut convallis quat facilis lor hendimentesque sus trisus eu. Gravidavitae amet dolor estas phasellus dolor eleris.</p>
+			<p>Dignisleu ut velit sce nam nequat ac temper por urnare nunc. Etsociis ac sed eget eget enim et eu nunc ac vest. Temperat nonummy maecenatoque fermentum tellus magnissim velit torta curabitae nequat dolorem. Tellentvenenas pellus sed consectetus conseque gravida est cras ut elit nibh. Elitpede fring pulvinare adipiscipiscipis tincidunt odio dui elit eleifendis sed sem.</p>
+			<p> <a href="article.html" class="more-link">Read the full story »</a></p>
+		</div>
+		<div class="divider"><img src="http://test-sites.internal.nativo.net/testing/images/divider.png" alt=""></div>
+		<div class="clearfloat">
+			<h3 class="cat_title"><a href="article.html">Travel</a> »</h3>
+			<span class="title"><a href="article.html">Morbicurabitur condisse.</a></span> <br>
+			<span class="meta">[3 Apr 2008 | <a href="article.html">No Comment</a> | 116 views]</span>
+			<p><img class="alignleft size-full wp-image-41" style="float: left;" src="http://test-sites.internal.nativo.net/testing/images/thumbs/nightlife.jpg" alt="" width="180" height="197">Elittemper mollisis ut maecenas vestibulum phasellus condissim vestas conseque aenec feugiat. Eueget ut vestiquet ac eu mauris dolor vel estibulum pulvinaretium in. Urnaaliquam habitae sit alique nibh nulla donec mus dui augue quis.</p>
+			<p>Felitgravida lor elit congue rutrum nibh maurisus netus wisi felis sus. Sedlaculis pede dapienterdum quisque netus monteget mi vitae pellent ligula sempus.</p>
+			<p><a href="article.html" class="more-link">Read the full story »</a></p>
+		</div>
+		<div class="divider"><img src="http://test-sites.internal.nativo.net/testing/images/divider.png" alt=""></div>
+		<div class="navigation">
+			<div class="left"><a href="article.html">« Older Entries</a></div>
+			<div class="right"></div>
+		</div>
+	</div>
+	<div id="sidebar">
+		<div id="sidebar-ads"> <img src="http://test-sites.internal.nativo.net/testing/images/ads/300x250.gif" width="300" height="250" alt=""></div>
+		<div id="sidebar-top">
+			<h3>About Arthemia</h3>
+			<div class="textwidget"> Arthemia is a free CSS template that complies to W3C standards. Arthemia is a magazine-style theme. Arthemia is also a Wordpress Theme, download the ported <a href="http://www.michaeljubel.com/2008/05/arthemia-magazine-blog-wordpress-theme-released/">Wordpress Themes</a>.</div>
+		</div>
+		<div id="sidebar-middle" class="clearfloat">
+			<div id="sidebar-left">
+				<h3>Pages</h3>
+				<ul>
+					<li class="page_item page-item-2"><a href="article.html">About</a></li>
+					<li class="page_item page-item-29"><a href="article.html">Advertise with Us</a></li>
+					<li class="page_item page-item-30"><a href="article.html">Jobs at Arthemia</a></li>
+					<li class="page_item page-item-39"><a href="article.html">This is a page example</a></li>
+					<li class="page_item page-item-38"><a href="article.html">Welcome to Arthemia</a></li>
+				</ul>
+				<h3>Archives</h3>
+				<ul>
+					<li><a href="article.html">May 2008</a>&nbsp;(1)</li>
+					<li><a href="article.html">April 2008</a>&nbsp;(5)</li>
+					<li><a href="article.html">January 2008</a>&nbsp;(2)</li>
+					<li><a href="article.html">December 2007</a>&nbsp;(5)</li>
+					<li><a href="article.html">November 2007</a>&nbsp;(2)</li>
+					<li><a href="article.html">September 2007</a>&nbsp;(1)</li>
+				</ul>
+			</div>
+			<div id="sidebar-right">
+				<h3>Admin Panel</h3>
+				<ul>
+					<li><a href="article.html">Log in</a></li>
+					<li><a href="article.html">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+					<li><a href="article.html">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+					<li><a href="article.html">WordPress.org</a></li>
+				</ul>
+				<h3>Blogroll</h3>
+				<ul>
+					<li><a href="article.html">Colorlabs Project</a></li>
+					<li><a href="article.html">Michael Jubel</a></li>
+					<li><a href="article.html">Hanna Siahaan</a></li>
+					<li><a href="article.html">Majari Magazine</a></li>
+					<li><a href="article.html">The Bloggerzine</a></li>
+					<li><a href="article.html">Majari Kanayakan</a></li>
+				</ul>
+			</div>
+		</div>
+		<div id="sidebar-bottom">
+			<h3>Popular Tags</h3>
+			<a href="article.html" class="tag-link-18" style="font-size:10.8pt;">apparels</a> <a href="article.html" class="tag-link-17" style="font-size:13.6pt;">arthemia</a> <a href="article.html" class="tag-link-23" style="font-size:8pt;">beach</a> <a href="article.html" class="tag-link-19" style="font-size:22pt;">dining</a> <a href="article.html" class="tag-link-27" style="font-size:10.8pt;">food</a> <a href="article.html" class="tag-link-22" style="font-size:10.8pt;">health</a> <a href="article.html" class="tag-link-21" style="font-size:10.8pt;">romance</a> <a href="article.html" class="tag-link-20" style="font-size:8pt;">sony&nbsp;ericsson</a> <a href="article.html" class="tag-link-26" style="font-size:8pt;">stuffs</a> <a href="article.html" class="tag-link-25" style="font-size:10.8pt;">tourism</a> <a href="article.html" class="tag-link-11" style="font-size:10.8pt;">Travel</a> <a href="article.html" class="tag-link-24" style="font-size:8pt;">vacation</a> <a href="article.html" class="tag-link-16" style="font-size:16.4pt;">wordpress</a> </div>
+	</div>
+</div>
+  </div>
+	<div id="footer"><a href="article.html">Log in</a> | <a href="article.html">Entries (RSS)</a> | <a href="article.html">Comments (RSS)</a> | Arthemia by <a href="http://www.michaeljubel.com">Michael Jubel</a> 
+</div>
+<div id="moat-standin" style="position: absolute; z-index: -1; top: 510px; left: 142px; width: 610px; height: 20px;"></div>
+<script> var test = 'you should not see this text'; </script>
+<script src="scripts/test-selector.js" type="text/javascript"></script> 
 </body>
 </html>

@@ -12,7 +12,7 @@
       return this;
     }
     __.prototype.html = function (value) {
-      if (typeof value == "string" && value.length > 0) {
+      if (typeof value == "string" && value) {
         switch (this.nodes instanceof Array) {
           case true:
             var that = this;
@@ -24,20 +24,8 @@
             insertHTMLAndJS(this, value, this.nodes, true)
             break;
         }
-      } else if (typeof value == "string" == 0) {
-        switch (this.nodes instanceof Array) {
-          case true:
-            var that = this;
-            this.each(function (item, index, array) {
-              insertHTMLAndJS(that, value, item)
-            })
-            break;
-          default:
-            insertHTMLAndJS(this, value, this.nodes)
-            break;
-        }
       } else {
-        return (this.nodes instanceof Array) ? null : this.nodes.innerHTML;
+        return (this.nodes instanceof Array) ? this.nodes[0].innerHTML : this.nodes.innerHTML;
       }
     }
     __.prototype.append = function (node) {
@@ -75,6 +63,7 @@
       }
       return this;
     };
+    __.prototype.appendTo = __.prototype.append;
     __.prototype.after = function (value) {
       return insertNode.call(this, "afterend", value);
     }
@@ -88,7 +77,15 @@
       return insertNode.call(this, "afterbegin", value);
     }
     __.prototype.children = function () {
-      setCurrentNode(this, converToArray(this.nodes.children));
+      if (this.nodes instanceof Array) { 
+        var kids = [];
+        this.nodes.each(function (item) { 
+          //if(item instanceof HTMLElement)
+          kids = kids.concat(converToArray(item.children))
+        })
+        setCurrentNode(this,kids)
+      } else 
+       setCurrentNode(this, converToArray(this.nodes.children));
       return this;
     };
     __.prototype.remove = function () {
@@ -170,7 +167,6 @@
       return this;
     };
     __.prototype.parent = function () {
-      console.log(arguments.callee.name)
       var parents = []
       this.each(function (item) { 
         parents.push(item.parentNode)
@@ -193,4 +189,14 @@
           break;  
       }
       return isSame;
-     }
+    }
+    __.prototype.width = function () { 
+      switch (this.nodes.length) { 
+        case 0:
+          return null;
+          break
+        default:
+          return this.nodes[0].getBoundingClientRect().width
+          break;
+      }
+    }
