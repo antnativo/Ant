@@ -83,6 +83,8 @@ __.prototype.constructor = __;
         setCurrentNode(this, Array.prototype.slice.apply(nodes))
       } else if (nodes instanceof __ && nodes.nodes && nodes.nodes.length) {
         setCurrentNode(this, Array.prototype.slice.apply(nodes.nodes))
+      } else if (nodes.type == 9) {
+        this.document = nodes
       } else {
         throw new Error("Unable to find node")
       }
