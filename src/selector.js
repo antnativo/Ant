@@ -69,6 +69,7 @@
         setCurrentNode(this, Array.prototype.slice.apply(nodes.nodes))
       } else if (nodes.type == 9) {
         this.document = nodes
+        setCurrentNode(this, [nodes])                
       } else {
         throw new Error("Unable to find node")
       }
