@@ -23,6 +23,7 @@ const server = require('./tests/server'),
       , 'src/events.js'
       , 'src/private.js'
       , 'src/style.js'
+      , 'src/animation.js'
       , 'src/wrappers/wrapper-end.js'
     ]
     , testingScripts: ['tests/scripts/*.js' ]
