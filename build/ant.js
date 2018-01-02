@@ -2,15 +2,15 @@ var $ant;
 (function () {
   $ant.query = (function () { 
 function __(nodes, context) {
-       Array.call(this)
+      Array.call(this)
       this.nodes = [];
       this.document = context;
-      this.history = []
+      this.history = [];
       this.previousSelectors = [];
       if(nodes)
         this.find(nodes);
-      this.length = this.nodes.length
-      return this;
+      this.length = this.nodes.length;
+      return Object.create(this);
 }
 __.prototype = Object.create(Array.prototype);
 __.prototype.constructor = __;
@@ -83,6 +83,9 @@ __.prototype.constructor = __;
         setCurrentNode(this, Array.prototype.slice.apply(nodes))
       } else if (nodes instanceof __ && nodes.nodes && nodes.nodes.length) {
         setCurrentNode(this, Array.prototype.slice.apply(nodes.nodes))
+      } else if (nodes.type == 9) {
+        this.document = nodes
+        setCurrentNode(this, [nodes])                
       } else {
         throw new Error("Unable to find node")
       }

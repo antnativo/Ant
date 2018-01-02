@@ -41,9 +41,10 @@
           this.each(function (item, index, array) {
             item.addEventListener("click", func, false);
           })
-        } else {
-          this.nodes.addEventListener("click", func, false);
-        }
+        } else if(this.nodes instanceof __) {
+          this.nodes.on("click", func);
+        } else if (this.nodes instanceof HTMLElement)
+          this.nodes.addEventListener("click", func, false);          
       } else {
         this.nodes.click();
       }
@@ -61,3 +62,63 @@
       }
       return this;
     }
+    __.prototype.mouseenter = function (func) {
+      if (typeof func == "function") {
+        if (this.nodes instanceof Array) {
+          this.each(function (item, index, array) {
+            item.addEventListener("mouseenter", func, false);
+          })
+        } else if(this.nodes instanceof __) {
+          this.nodes.on("mouseenter", func);
+        } else if (this.nodes instanceof HTMLElement)
+          this.nodes.addEventListener("mouseenter", func, false);          
+      } else {
+        this.nodes.mouseenter();
+      }
+      return this;
+    };
+    __.prototype.mouseleave = function (func) {
+      if (typeof func == "function") {
+        if (this.nodes instanceof Array) {
+          this.each(function (item, index, array) {
+            item.addEventListener("mouseleave", func, false);
+          })
+        } else if(this.nodes instanceof __) {
+          this.nodes.on("mouseleave", func);
+        } else if (this.nodes instanceof HTMLElement)
+          this.nodes.addEventListener("mouseleave", func, false);          
+      } else {
+        this.nodes.mouseleave();
+      }
+      return this;
+    };
+    __.prototype.mouseover = function (func) {
+      if (typeof func == "function") {
+        if (this.nodes instanceof Array) {
+          this.each(function (item, index, array) {
+            item.addEventListener("mouseover", func, false);
+          })
+        } else if(this.nodes instanceof __) {
+          this.nodes.on("mouseover", func);
+        } else if (this.nodes instanceof HTMLElement)
+          this.nodes.addEventListener("mouseover", func, false);          
+      } else {
+        this.nodes.mouseover();
+      }
+      return this;
+    };
+    __.prototype.mouseout = function (func) {
+      if (typeof func == "function") {
+        if (this.nodes instanceof Array) {
+          this.each(function (item, index, array) {
+            item.addEventListener("mouseout", func, false);
+          })
+        } else if(this.nodes instanceof __) {
+          this.nodes.on("mouseout", func);
+        } else if (this.nodes instanceof HTMLElement)
+          this.nodes.addEventListener("mouseout", func, false);          
+      } else {
+        this.nodes.mouseout();
+      }
+      return this;
+    };
